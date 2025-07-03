@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Sistemas</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid #0076FF;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            flex-wrap: wrap;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-right: auto;
+        }
+
+        .header h2 {
+            color: #333;
+            margin: 0;
+            font-weight: 600;
+            font-size: 24px;
+            white-space: nowrap;
+        }
+
+        /* NOVO: Estilos para o seletor (dropdown) */
+        .system-selector {
+            margin-left: 20px;
+            padding: 8px 30px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            background-color: #f8f8f8;
+            cursor: pointer;
+            outline: none;
+            appearance: none;
+            /* Remove estilo padrão do navegador */
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%230076FF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-6.5%200-12.3%203.2-16.1%208.1-3.8%204.9-4.8%2011.5-2.8%2017.7l139.3%20208.2c3.9%205.8%2010.5%209.2%2017.7%209.2s13.8-3.4%2017.7-9.2l139.3-208.2c2-6.2%201-12.8-2.8-17.7z%22%2F%3E%3C%2Fsvg%3E');
+            /* Seta customizada */
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 12px;
+            color: #333;
+        }
+
+        .system-selector:hover {
+            border-color: #0076FF;
+        }
+
+        .header-logo {
+            margin-left: 20px;
+        }
+
+        .header-logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .logout-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+
+        .iframe-container {
+            width: 100%;
+            height: calc(100% - 63px);
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Media Queries para responsividade */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+            }
+
+            .header-left {
+                width: 100%;
+                margin-right: 0;
+                justify-content: space-between;
+            }
+
+            .header h2 {
+                font-size: 20px;
+            }
+
+            .system-selector {
+                margin-left: 0;
+                margin-top: 10px;
+                width: 100%;
+                /* Ocupa toda a largura disponível */
+            }
+
+            .header-logo {
+                margin-left: 0;
+                margin-top: 10px;
+                width: 100%;
+                text-align: right;
+            }
+
+            .logout-button {
+                margin-top: 10px;
+                width: 100%;
+            }
+
+            .iframe-container {
+                height: calc(100% - 150px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="header-left">
+            <h2>Portal</h2>
+            <!-- NOVO: Seletor (dropdown) no lugar dos botões -->
+            <select id="system-selector" class="system-selector" onchange="carregarSistema(this.value)">
+                {% for sistema in sistemas_logados %}
+                <option value="{{ url_for('proxy_request', system_id=sistema.id) }}">
+                    {{ sistema.nome_exibicao }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="header-logo">
+            <img src="{{ url_for('static', filename='logo_movecta.png') }}" alt="Logo Movecta">
+        </div>
+
+        <a href="{{ url_for('logout') }}" class="logout-button">Sair</a>
+    </div>
+
+    <div class="iframe-container">
+        <iframe id="sistema-iframe" src="" title="Sistema Integrado"></iframe>
+    </div>
+
+    <script>
+        const systemSelector = document.getElementById('system-selector');
+
+        function carregarSistema(proxyUrl) {
+            document.getElementById('sistema-iframe').src = proxyUrl;
+        }
+
+        // Carrega o primeiro sistema da lista por padrão ao entrar na página
+        window.onload = function () {
+            if (systemSelector.options.length > 0) {
+                // Define o valor do seletor para o primeiro item e dispara a função
+                systemSelector.value = systemSelector.options[0].value;
+                carregarSistema(systemSelector.value);
+            } else {
+                document.body.innerHTML = '<div style="text-align: center; padding-top: 50px;"><h1>Nenhum sistema pôde ser acessado.</h1><p><a href=\'/\'>Tentar novamente</a></p></div>';
+            }
+        };
+    </script>
+</body>
+
+</html>
