@@ -211,5 +211,55 @@ def logout():
     session.clear()
     return redirect(url_for('index'))
 
+@app.route('/trocar-senha', methods=['POST'])
+def handle_password_change():
+    """
+    Recebe a nova senha e a envia para todos os sistemas
+    nos quais o usuário tem uma sessão ativa.
+    """
+    if 'sessoes_proxy' not in session:
+        return {"status": "error", "message": "Sessão não encontrada."}, 401
+
+    nova_senha = request.form.get('secret')
+    if not nova_senha:
+        return {"status": "error", "message": "Nenhuma senha fornecida."}, 400
+
+    print("--- Iniciando processo de troca de senha em massa ---")
+    
+    # Itera sobre todos os sistemas onde temos uma sessão guardada
+    for system_id, cookie_dict in session['sessoes_proxy'].items():
+        if system_id not in SISTEMAS:
+            continue
+
+        host = SISTEMAS[system_id]['host']
+        # A URL de destino para a troca de senha
+        target_url = urljoin(host, '/cadastro')
+        
+        payload = {
+            'secret': nova_senha,
+            're_secret': nova_senha,
+            'submit': 'Alterar senha e continuar'
+        }
+
+        # Usa os cookies da sessão para fazer uma requisição autenticada
+        cookies = requests.utils.cookiejar_from_dict(cookie_dict)
+        
+        try:
+            resp = requests.post(target_url, data=payload, cookies=cookies, timeout=20, allow_redirects=True)
+            if resp.ok:
+                print(f"✅ Sucesso na troca de senha para: {system_id}")
+            else:
+                print(f"❌ Falha na troca de senha para: {system_id} (Status: {resp.status_code})")
+        except requests.exceptions.RequestException as e:
+            print(f"❌ Erro de conexão ao trocar senha para {system_id}: {e}")
+            continue
+
+    print("--- Processo de troca de senha finalizado ---")
+    # Retorna uma resposta de sucesso para o JavaScript
+    return {"status": "success", "message": "Processo de troca de senha enviado."}, 200
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
+
+

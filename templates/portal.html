@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Sistemas</title>
     <style>
+        /* ESTILOS ORIGINAIS (sem alterações) */
         html,
         body {
             margin: 0;
@@ -13,6 +14,7 @@
             height: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
+            background-color: #f4f7f9;
         }
 
         .header {
@@ -41,7 +43,6 @@
             white-space: nowrap;
         }
 
-        /* NOVO: Estilos para o seletor (dropdown) */
         .system-selector {
             margin-left: 20px;
             padding: 8px 30px;
@@ -52,9 +53,7 @@
             cursor: pointer;
             outline: none;
             appearance: none;
-            /* Remove estilo padrão do navegador */
             background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%230076FF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-6.5%200-12.3%203.2-16.1%208.1-3.8%204.9-4.8%2011.5-2.8%2017.7l139.3%20208.2c3.9%205.8%2010.5%209.2%2017.7%209.2s13.8-3.4%2017.7-9.2l139.3-208.2c2-6.2%201-12.8-2.8-17.7z%22%2F%3E%3C%2Fsvg%3E');
-            /* Seta customizada */
             background-repeat: no-repeat;
             background-position: right 8px center;
             background-size: 12px;
@@ -102,7 +101,172 @@
             border: none;
         }
 
-        /* Media Queries para responsividade */
+        /* --- ESTILOS PARA A PÁGINA DE TROCA DE SENHA (ATUALIZADOS) --- */
+        .header-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 15px;
+            transition: background-color 0.2s;
+        }
+
+        .header-button:hover {
+            background-color: #0056b3;
+        }
+
+        #back-to-portal-btn {
+            background-color: #6c757d;
+        }
+
+        #back-to-portal-btn:hover {
+            background-color: #5a6268;
+        }
+
+        #password-change-view {
+            padding: 40px;
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #password-change-view h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #password-change-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        #password-change-form input {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        #password-change-form button {
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        #password-change-form button:hover {
+            background-color: #218838;
+        }
+
+        .password-rules {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e7f3fe;
+            border-left: 4px solid #007bff;
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* --- ESTILOS PARA O NOVO LOADING SPINNER --- */
+        #loading-message {
+            text-align: center;
+            padding: 50px;
+        }
+
+        .spinner {
+            margin: 20px auto;
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #007bff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* --- ESTILOS PARA O NOVO MODAL DE SUCESSO --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            color: #28a745;
+        }
+
+        .modal-content p {
+            color: #555;
+        }
+
+        .modal-button {
+            margin-top: 20px;
+            padding: 10px 25px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .modal-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Media Queries */
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -124,7 +288,6 @@
                 margin-left: 0;
                 margin-top: 10px;
                 width: 100%;
-                /* Ocupa toda a largura disponível */
             }
 
             .header-logo {
@@ -150,44 +313,126 @@
     <div class="header">
         <div class="header-left">
             <h2>Portal</h2>
-            <!-- NOVO: Seletor (dropdown) no lugar dos botões -->
-            <select id="system-selector" class="system-selector" onchange="carregarSistema(this.value)">
-                {% for sistema in sistemas_logados %}
-                <option value="{{ url_for('proxy_request', system_id=sistema.id) }}">
-                    {{ sistema.nome_exibicao }}
-                </option>
-                {% endfor %}
-            </select>
+            <div id="portal-controls">
+                <select id="system-selector" class="system-selector">
+                    {% for sistema in sistemas_logados %}<option
+                        value="{{ url_for('proxy_request', system_id=sistema.id) }}">{{ sistema.nome_exibicao }}
+                    </option>{% endfor %}
+                </select>
+                <button id="show-password-change-btn" class="header-button">Troca de Senha</button>
+            </div>
+            <button id="back-to-portal-btn" class="header-button" style="display: none;">&larr; Voltar</button>
         </div>
-
         <div class="header-logo">
             <img src="{{ url_for('static', filename='logo_movecta.png') }}" alt="Logo Movecta">
         </div>
-
-        <a href="{{ url_for('logout') }}" class="logout-button">Sair</a>
+        <a href="{{ url_for('logout') }}" id="logout-btn" class="logout-button">Sair</a>
     </div>
 
-    <div class="iframe-container">
+    <div class="iframe-container" id="main-content">
         <iframe id="sistema-iframe" src="" title="Sistema Integrado"></iframe>
     </div>
 
+    <div id="password-change-view" style="display: none;">
+        <h2>Alterar Senha em Todos os Sistemas</h2>
+        <form id="password-change-form">
+            <p>Por questões de segurança, sua senha deve ser alterada para habilitar seu acesso ao sistema.</p>
+            <input type="password" name="secret" placeholder="Digite a nova senha" required minlength="8">
+            <input type="password" name="re_secret" placeholder="Redigite a nova senha" required minlength="8">
+            <button type="submit">Alterar senha e continuar</button>
+            <div class="password-rules">
+                <p>A senha deve ter no mínimo 8 caracteres, e conter: Pelo menos 1 caractere especial, 1 letra maiúscula
+                    e 1 número.</p>
+            </div>
+        </form>
+        <div id="loading-message" style="display: none;">
+            <div class="spinner"></div>
+            <h3>Processando...</h3>
+            <p>Senha sendo alterada em todos os sistemas. Por favor, aguarde.</p>
+        </div>
+    </div>
+
+    <div id="success-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3>Sucesso!</h3>
+            <p>Processo de troca de senha concluído! Você será redirecionado para a tela de login para entrar com a nova
+                senha.</p>
+            <button id="modal-ok-btn" class="modal-button">OK</button>
+        </div>
+    </div>
+
     <script>
-        const systemSelector = document.getElementById('system-selector');
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Parte 1: Lógica do Iframe (sem alterações) ---
+            const systemSelector = document.getElementById('system-selector');
+            const iframe = document.getElementById('sistema-iframe');
+            function carregarSistema(proxyUrl) { if (proxyUrl) iframe.src = proxyUrl; }
+            systemSelector.addEventListener('change', function () { carregarSistema(this.value); });
+            if (systemSelector.options.length > 0) { carregarSistema(systemSelector.options[0].value); }
+            else { document.body.innerHTML = '<div style="text-align: center; padding-top: 50px;"><h1>Nenhum sistema pôde ser acessado.</h1><p><a href=\'/\'>Tentar novamente</a></p></div>'; }
 
-        function carregarSistema(proxyUrl) {
-            document.getElementById('sistema-iframe').src = proxyUrl;
-        }
+            // --- Parte 2: Lógica da Troca de Senha (ATUALIZADA) ---
+            const mainContent = document.getElementById('main-content');
+            const passwordView = document.getElementById('password-change-view');
+            const portalControls = document.getElementById('portal-controls');
+            const passwordForm = document.getElementById('password-change-form');
+            const loadingMessage = document.getElementById('loading-message');
+            const showPasswordBtn = document.getElementById('show-password-change-btn');
+            const backBtn = document.getElementById('back-to-portal-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const successModal = document.getElementById('success-modal');
+            const modalOkBtn = document.getElementById('modal-ok-btn');
 
-        // Carrega o primeiro sistema da lista por padrão ao entrar na página
-        window.onload = function () {
-            if (systemSelector.options.length > 0) {
-                // Define o valor do seletor para o primeiro item e dispara a função
-                systemSelector.value = systemSelector.options[0].value;
-                carregarSistema(systemSelector.value);
-            } else {
-                document.body.innerHTML = '<div style="text-align: center; padding-top: 50px;"><h1>Nenhum sistema pôde ser acessado.</h1><p><a href=\'/\'>Tentar novamente</a></p></div>';
-            }
-        };
+            // Mostrar/Esconder telas
+            showPasswordBtn.addEventListener('click', function () {
+                mainContent.style.display = 'none'; portalControls.style.display = 'none'; logoutBtn.style.display = 'none';
+                passwordView.style.display = 'block'; backBtn.style.display = 'block';
+            });
+            backBtn.addEventListener('click', function () {
+                mainContent.style.display = 'block'; portalControls.style.display = 'block'; logoutBtn.style.display = 'block';
+                passwordView.style.display = 'none'; backBtn.style.display = 'none';
+            });
+
+            // Enviar nova senha
+            passwordForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                const formData = new FormData(passwordForm);
+                const secret = formData.get('secret');
+                const re_secret = formData.get('re_secret');
+
+                if (secret !== re_secret) { alert('As senhas não coincidem!'); return; }
+                if (secret.length < 8) { alert('A senha deve ter no mínimo 8 caracteres.'); return; }
+
+                passwordForm.style.display = 'none'; loadingMessage.style.display = 'block';
+
+                fetch("{{ url_for('handle_password_change') }}", { method: 'POST', body: formData })
+                    .then(response => {
+                        if (!response.ok) { throw new Error('Erro do servidor: ' + response.statusText); }
+                        return response.json();
+                    })
+                    .then(data => {
+                        loadingMessage.style.display = 'none'; // Esconde o loading
+                        if (data.status === 'success') {
+                            // --- SUBSTITUI O ALERT PELO MODAL ---
+                            successModal.style.display = 'flex';
+                        } else {
+                            alert('Ocorreu um erro: ' + data.message);
+                            passwordForm.style.display = 'flex'; // Mostra o form de novo em caso de erro
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro na requisição fetch:', error);
+                        alert('Ocorreu um erro de conexão. Verifique o console e tente novamente.');
+                        loadingMessage.style.display = 'none';
+                        passwordForm.style.display = 'flex';
+                    });
+            });
+
+            // Evento para o botão OK do modal
+            modalOkBtn.addEventListener('click', function () {
+                window.location.href = "{{ url_for('logout') }}";
+            });
+        });
     </script>
 </body>
 
